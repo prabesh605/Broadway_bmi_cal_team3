@@ -1,3 +1,6 @@
+import 'package:broadway_bmi_cal/bmi_service.dart';
+import 'package:broadway_bmi_cal/constant.dart';
+import 'package:broadway_bmi_cal/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -12,20 +15,31 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Gender? gender;
-  int weight = 60;
-  int age = 12;
-  double height = 150;
+  // int weight = 60;
+  // int age = 12;
+  // double height = 150;
+  BmiService bmiService = BmiService();
 
-  Color highlightedColor = Color(0xff4c4f5e);
-  Color unhighlightedColor = Color(0xff111328);
+  // Color highlightedColor = Color(0xff4c4f5e);
+  // Color unhighlightedColor = Color(0xff111328);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff0a0e21),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         centerTitle: false,
-        backgroundColor: Colors.black,
+        backgroundColor: appbarBackgroundColor,
         title: Text("BMI CALCULATOR", style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                bmiService.reset();
+              });
+            },
+            icon: Icon(Icons.restore, color: Colors.white),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -85,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        height.toStringAsFixed(0),
+                        bmiService.height.toStringAsFixed(0),
                         style: TextStyle(color: Colors.white, fontSize: 28),
                       ),
                       Text(
@@ -95,12 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Slider(
-                    value: height,
-                    min: 100,
-                    max: 500,
+                    value: bmiService.height,
+                    min: 1,
+                    max: 200,
                     onChanged: (value) {
                       setState(() {
-                        height = value;
+                        bmiService.height = value;
                       });
                     },
                   ),
@@ -115,15 +129,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ButtomCustomWidget(
                     unhighlightedColor: unhighlightedColor,
                     name: "WEIGHT",
-                    value: weight,
+                    value: bmiService.weight,
                     decrementOnTap: () {
                       setState(() {
-                        weight--;
+                        bmiService.weight--;
                       });
                     },
                     incrementOnTap: () {
                       setState(() {
-                        weight++;
+                        bmiService.weight++;
                       });
                     },
                   ),
@@ -132,20 +146,62 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ButtomCustomWidget(
                     unhighlightedColor: unhighlightedColor,
                     name: "AGE",
-                    value: age,
+                    value: bmiService.age,
                     decrementOnTap: () {
                       setState(() {
-                        age--;
+                        bmiService.age--;
                       });
                     },
                     incrementOnTap: () {
                       setState(() {
-                        age++;
+                        bmiService.age++;
                       });
                     },
                   ),
                 ),
               ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              double bmi = bmiService.calculateBMI(
+                bmiService.height,
+                bmiService.weight.toDouble(),
+              );
+              String category = bmiService.getCategory(bmi);
+              String advice = bmiService.getBmiAdvice(bmi);
+
+              // print("Hello world");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultScreen(
+                    bmiValue: bmi,
+                    category: category,
+                    advice: advice,
+                    gender: gender?.name ?? "FEMALE",
+                    age: bmiService.age,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              height: 60,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: buttomColor,
+              ),
+              child: Center(
+                child: Text(
+                  "CALCULATE",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ),
         ],

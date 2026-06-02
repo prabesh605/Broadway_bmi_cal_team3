@@ -1,3 +1,4 @@
+// import 'package:broadway_bmi_cal/bmi_screen.dart';
 import 'package:broadway_bmi_cal/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+      // home: BmiScreen(),
+    );
   }
 }
