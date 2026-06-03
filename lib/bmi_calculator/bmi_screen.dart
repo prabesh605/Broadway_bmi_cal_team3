@@ -1,19 +1,19 @@
-import 'package:broadway_bmi_cal/bmi_service.dart';
-import 'package:broadway_bmi_cal/constant.dart';
-import 'package:broadway_bmi_cal/result_screen.dart';
+import 'package:broadway_bmi_cal/bmi_calculator/bmi_service.dart';
+import 'package:broadway_bmi_cal/bmi_calculator/constant.dart';
+import 'package:broadway_bmi_cal/bmi_calculator/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum Gender { male, female }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class BmiScreen extends StatefulWidget {
+  const BmiScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<BmiScreen> createState() => _BmiScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _BmiScreenState extends State<BmiScreen> {
   Gender? gender;
   // int weight = 60;
   // int age = 12;
@@ -171,7 +171,14 @@ class _HomeScreenState extends State<HomeScreen> {
               String category = bmiService.getCategory(bmi);
               String advice = bmiService.getBmiAdvice(bmi);
 
-              // print("Hello world");
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => Home(), //which screen to navigate
+              //   ),
+              // );
+
+              print("Hello world");
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -303,5 +310,14 @@ class CustomWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Column(children: [Text("This is home screen")]));
   }
 }

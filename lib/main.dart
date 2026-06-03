@@ -1,5 +1,6 @@
 // import 'package:broadway_bmi_cal/bmi_screen.dart';
-import 'package:broadway_bmi_cal/home_screen.dart';
+// import 'package:broadway_bmi_cal/bmi_calculator/bmi_screen.dart';
+import 'package:broadway_bmi_cal/weather/weather_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,8 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-      // home: BmiScreen(),
+      home: WeatherScreen(),
+      // BmiScreen()
     );
   }
 }

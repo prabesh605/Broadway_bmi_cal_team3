@@ -1,5 +1,5 @@
-import 'package:broadway_bmi_cal/bmi_service.dart';
-import 'package:broadway_bmi_cal/constant.dart';
+import 'package:broadway_bmi_cal/bmi_calculator/bmi_service.dart';
+import 'package:broadway_bmi_cal/bmi_calculator/constant.dart';
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
