@@ -9,7 +9,7 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  String apiKey='0b10461d5a30e6612ce19d84c97ef651'
+  String apiKey = '0b10461d5a30e6612ce19d84c97ef651';
   Future<Position> getLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -35,6 +35,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
         onPressed: () async {
           Position position = await getLocation();
           print(position);
+          double lat = position.latitude;
+          double lon = position.longitude;
         },
         child: Icon(Icons.my_location),
       ),
