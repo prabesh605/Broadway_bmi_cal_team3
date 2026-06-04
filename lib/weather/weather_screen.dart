@@ -29,7 +29,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Weather Screen")),
+      appBar: AppBar(title: Text("Weather Screen"), leading: Icon(Icons.alarm)),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Position position = await getLocation();
