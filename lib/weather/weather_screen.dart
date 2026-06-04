@@ -37,6 +37,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
           print(position);
           double lat = position.latitude;
           double lon = position.longitude;
+
+          print("Latitude: $lat, Longitude: $lon");
         },
         child: Icon(Icons.my_location),
       ),
