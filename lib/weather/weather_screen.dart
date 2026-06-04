@@ -1,3 +1,4 @@
+import 'package:broadway_bmi_cal/weather/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -10,6 +11,7 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   String apiKey = '0b10461d5a30e6612ce19d84c97ef651';
+  ApiService apiService = ApiService();
   Future<Position> getLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -27,6 +29,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return await Geolocator.getCurrentPosition();
   }
 
+  dynamic? data;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,18 +41,22 @@ class _WeatherScreenState extends State<WeatherScreen> {
           print(position);
           double lat = position.latitude;
           double lon = position.longitude;
+           data = await apiService.getWeatherData(lat, lon);
+          // print(data['coord']);
         },
         child: Icon(Icons.my_location),
       ),
       body: Column(
         children: [
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     Position position = await getLocation();
-          //     print(position);
-          //   },
-          //   child: Text("Location"),
-          // ),
+          Text('${data["coord"]}'),
+          ElevatedButton(
+            onPressed: () async {
+
+              // dynamic data = await apiService.getWeatherData();
+              // print(data['coord']);
+            },
+            child: Text("Location"),
+          ),
         ],
       ),
     );
