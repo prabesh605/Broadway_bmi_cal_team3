@@ -42,4 +42,29 @@ class ApiService {
     }
     return await Geolocator.getCurrentPosition();
   }
+
+  String checkWeather(int weatherCode) {
+    if (weatherCode >= 200 && weatherCode < 300) {
+      return '⛈️'; // Thunderstorm
+    } else if (weatherCode >= 300 && weatherCode < 400) {
+      return '🌦️'; // Drizzle
+    } else if (weatherCode >= 500 && weatherCode < 600) {
+      return '🌧️'; // Rain
+    } else if (weatherCode >= 600 && weatherCode < 700) {
+      return '❄️'; // Snow
+    } else if (weatherCode >= 700 && weatherCode < 800) {
+      return '🌫️'; // Fog, Mist, Haze
+    } else if (weatherCode == 800) {
+      return '☀️'; // Clear Sky
+    } else if (weatherCode > 800 && weatherCode <= 804) {
+      return '☁️'; // Clouds
+    } else {
+      return '🤷'; // Unknown weather
+    }
+  }
+
+  int getRainPercentage(int humidity, int clouds) {
+    int rainChance = ((humidity * 0.6) + (clouds * 0.4)).round();
+    return rainChance;
+  }
 }

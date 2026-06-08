@@ -2,6 +2,7 @@ import 'package:broadway_bmi_cal/weather/api_service.dart';
 import 'package:broadway_bmi_cal/weather/weather_model.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -19,9 +20,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
   double? speed;
   String? country;
   String? name;
+  String weatherImage = '☁︎';
+  DateTime currentDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    print(currentDate);
     return Scaffold(
       backgroundColor: Color(0xff080b30),
       appBar: AppBar(
@@ -35,7 +39,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
           double lon = position.longitude;
           //
           data = await apiService.getWeatherData(lat, lon);
-          setState(() {});
+          setState(() {
+            weatherImage = apiService.checkWeather(data?.cod ?? 200);
+          });
         },
         child: Icon(Icons.my_location),
       ),
@@ -45,6 +51,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              DropdownButton(
+                items: [
+                  DropdownMenuItem(value: "Nepal", child: Text("Nepal")),
+                  DropdownMenuItem(value: "India", child: Text("India")),
+                ],
+                onChanged: (value) {
+                  print(value);
+                },
+              ),
               Row(
                 children: [
                   Expanded(
@@ -59,16 +74,27 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     onPressed: () async {
                       String country = controller.text;
                       data = await apiService.getWeatherByCountry(country);
-                      setState(() {});
+
+                      setState(() {
+                        weatherImage = apiService.checkWeather(
+                          data?.cod ?? 200,
+                        );
+                      });
                     },
                     icon: Icon(Icons.search, color: Colors.white),
                   ),
                 ],
               ),
               // data != null ? Text('${data["coord"]}') : Container(),
-              Text("☁︎", style: TextStyle(color: Colors.white, fontSize: 180)),
+              Text(
+                weatherImage,
+                style: TextStyle(color: Colors.white, fontSize: 180),
+              ),
 
-              Text("Wednesday 25 Dec", style: TextStyle(color: Colors.white)),
+              Text(
+                DateFormat.yMMMMEEEEd().format(currentDate),
+                style: TextStyle(color: Colors.white),
+              ),
               SizedBox(height: 20),
               Text(
                 "${data?.main.temp ?? 0.0}°",
@@ -78,17 +104,31 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   color: Colors.white,
                 ),
               ),
+              Text(
+                data?.name ?? "",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
               SizedBox(height: 120),
+
               Row(
                 children: [
                   Expanded(
-                    child: CutomWidget(name: 'Rain', value: '90%', image: '☁︎'),
+                    child: CutomWidget(
+                      name: 'Rain',
+                      value:
+                          '${apiService.getRainPercentage(data?.main.humidity ?? 0, 0)}%',
+                      image: '🌧️',
+                    ),
                   ),
                   Expanded(
                     child: CutomWidget(
                       name: 'Wind',
-                      value: '7 km/h',
-                      image: '☁︎',
+                      value: '${data?.wind.speed ?? 0}km/h',
+                      image: '🌫️',
                     ),
                   ),
 
@@ -96,7 +136,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     child: CutomWidget(
                       name: 'Humidity',
                       value: '${data?.main.humidity ?? 0.0}%',
-                      image: '☁︎',
+                      image: '💧',
                     ),
                   ),
                 ],
