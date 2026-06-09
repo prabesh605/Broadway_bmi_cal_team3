@@ -26,6 +26,21 @@ class ApiService {
     return weather;
   }
 
+  Future<String> login(String email, String password) async {
+    String url = "https://api.restful-api.dev/login";
+    http.Response response = await http.post(
+      Uri.parse(url),
+      headers: {
+        "x-api-key": "1b954e26-4980-463c-8f9f-89a7e3a56ab1",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({"email": "$email", "password": "$password"}),
+    );
+    var json = jsonDecode(response.body);
+    print(json['token']);
+    return json['token'] ?? "";
+  }
+
   Future<Position> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
