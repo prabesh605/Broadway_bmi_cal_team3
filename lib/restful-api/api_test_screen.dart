@@ -120,6 +120,19 @@ class _ApiTestScreenState extends State<ApiTestScreen> {
     );
   }
 
+  Future<void> apiCall() async {
+    var apiData = await apiTestServices.getAllData();
+    setState(() {
+      datas = apiData;
+    });
+  }
+
+  @override
+  void initState() {
+    apiCall();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
