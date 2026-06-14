@@ -1,3 +1,4 @@
+import 'package:broadway_bmi_cal/offline/offline_screen.dart';
 import 'package:flutter/material.dart';
 
 class SecondScreen extends StatefulWidget {
@@ -22,7 +23,11 @@ class _SecondScreenState extends State<SecondScreen> {
               // Icon(Icons.image, size: 500),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OfflineScreen()),
+                  );
                 },
                 child: Text("Button"),
               ),

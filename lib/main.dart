@@ -2,6 +2,7 @@
 // import 'package:broadway_bmi_cal/bmi_calculator/bmi_screen.dart';
 import 'package:broadway_bmi_cal/animation/animation_screen.dart';
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
+import 'package:broadway_bmi_cal/offline/offline_screen.dart';
 import 'package:broadway_bmi_cal/restful-api/api_test_screen.dart';
 import 'package:broadway_bmi_cal/weather/login_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext gitcontext) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AnimationScreen(),
+      home: OfflineScreen(),
       //  WeatherScreen(),
       // BmiScreen()
     );
