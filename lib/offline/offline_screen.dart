@@ -1,5 +1,6 @@
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
 import 'package:broadway_bmi_cal/offline/info_model.dart';
+import 'package:broadway_bmi_cal/offline/jsonplaceholder_screen.dart';
 import 'package:broadway_bmi_cal/offline/offline_service.dart';
 import 'package:flutter/material.dart';
 
@@ -163,6 +164,17 @@ class _OfflineScreenState extends State<OfflineScreen> {
                 );
               },
             ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => JsonplaceholderScreen(),
+                ),
+              );
+            },
+            child: Text("Next Screen"),
           ),
         ],
       ),
