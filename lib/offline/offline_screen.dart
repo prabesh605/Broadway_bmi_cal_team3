@@ -14,9 +14,13 @@ class _OfflineScreenState extends State<OfflineScreen> {
   List<Info> myOfflineData = [
     // Info(name: "Prabesh", address: "address")
   ];
-  void addUpdateData() {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController addressController = TextEditingController();
+  void addUpdateData(Info? info) {
+    TextEditingController nameController = TextEditingController(
+      text: info?.name ?? "",
+    );
+    TextEditingController addressController = TextEditingController(
+      text: info?.address ?? "",
+    );
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -25,7 +29,9 @@ class _OfflineScreenState extends State<OfflineScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Save Data Offline"),
+            info == null
+                ? Text("Save Data Offline")
+                : Text("Update Data Offline"),
             SizedBox(height: 20),
             TextFormField(
               controller: nameController,
@@ -50,15 +56,17 @@ class _OfflineScreenState extends State<OfflineScreen> {
                 Info data = Info(
                   name: nameController.text,
                   address: addressController.text,
+                  id: info == null ? 0 : info.id,
                 );
-
-                await OfflineService.instance.insert(data);
-                setState(() {
-                  myOfflineData.add(data);
-                });
+                info == null
+                    ? await OfflineService.instance.insert(data)
+                    : await OfflineService.instance.update(data);
+                // setState(() {
+                //   myOfflineData.add(data);
+                // });
                 Navigator.pop(context);
               },
-              child: Text("save"),
+              child: info == null ? Text("save") : Text("Update"),
             ),
             SizedBox(height: 20),
           ],
@@ -68,25 +76,57 @@ class _OfflineScreenState extends State<OfflineScreen> {
   }
 
   @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  Future<void> getData() async {
+    List<Info> data = await OfflineService.instance.get();
+    setState(() {
+      myOfflineData = data;
+    });
+  }
+
+  @override
   Widget build(BuildContext gitcontext) {
     return Scaffold(
-      appBar: AppBar(title: Text("Offline Screen")),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          addUpdateData();
-        },
-        child: Icon(Icons.add),
-      ),
-      body: Column(
-        children: [
-          ElevatedButton(
+      appBar: AppBar(
+        title: Text("Offline Screen"),
+        actions: [
+          IconButton(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => FirstScreen()),
               );
             },
-            child: Text("Next Screen"),
+            icon: Icon(Icons.arrow_back),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addUpdateData(null);
+        },
+        child: Icon(Icons.add),
+      ),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () async {
+              List<Info> data = await OfflineService.instance.get();
+              setState(() {
+                myOfflineData = data;
+              });
+
+              print(data);
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => FirstScreen()),
+              // );
+            },
+            child: Text("Get offline Data"),
           ),
           Text("My Data"),
           SizedBox(height: 20),
@@ -96,8 +136,30 @@ class _OfflineScreenState extends State<OfflineScreen> {
               itemBuilder: (context, index) {
                 Info myData = myOfflineData[index];
                 return ListTile(
+                  leading: Text("${myData.id}"),
                   title: Text(myData.name),
                   subtitle: Text(myData.address),
+                  trailing: Container(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          color: Colors.black,
+                          onPressed: () {
+                            addUpdateData(myData);
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          color: Colors.red,
+                          onPressed: () {
+                            OfflineService.instance.delete(myData.id);
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),

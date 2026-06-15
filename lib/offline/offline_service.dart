@@ -32,7 +32,49 @@ class OfflineService {
   Map<String, dynamic> data = {"name": "Prabesh", "address": "ktm"};
   //insert
   Future<void> insert(Info data) async {
-    final db = await instance.database;
-    await db.insert('info', data.toJson());
+    try {
+      final db = await instance.database;
+      await db.insert('info', data.toJson());
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  //get
+  Future<List<Info>> get() async {
+    try {
+      final db = await instance.database;
+      List<Map<String, dynamic>> value = await db.query('info');
+
+      List<Info> data = value.map((item) => Info.fromJson(item)).toList();
+      return data;
+    } catch (e) {
+      print(e.toString());
+      throw e.toString();
+    }
+  }
+
+  Future<void> delete(int id) async {
+    try {
+      final db = await instance.database;
+      await db.delete('info', where: "id=?", whereArgs: [id]);
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  //update
+  Future<void> update(Info info) async {
+    try {
+      final db = await instance.database;
+      await db.update(
+        'info',
+        info.toJson(),
+        where: "id=?",
+        whereArgs: [info.id],
+      );
+    } catch (e) {
+      throw e.toString();
+    }
   }
 }
