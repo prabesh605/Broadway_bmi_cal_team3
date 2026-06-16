@@ -16,7 +16,7 @@ class OfflineService {
   Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, fileName);
-    return await openDatabase(path, version: 1, onCreate: _createDb);
+    return await openDatabase(path, version: 2, onCreate: _createDb);
   }
 
   Future _createDb(Database db, int version) async {
@@ -27,9 +27,17 @@ class OfflineService {
     address text
     )
     ''');
+    await db.execute('''
+Create Table rawData(
+id INTEGER primary key autoincrement,
+title text,
+body text,
+userId Integer
+)
+
+''');
   }
 
-  Map<String, dynamic> data = {"name": "Prabesh", "address": "ktm"};
   //insert
   Future<void> insert(Info data) async {
     try {
@@ -73,6 +81,25 @@ class OfflineService {
         where: "id=?",
         whereArgs: [info.id],
       );
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  ////-------------raw data---------------------------
+  Future<void> insertRawData(Map<String, dynamic> raw) async {
+    try {
+      final db = await instance.database;
+      await db.insert("rawData", raw);
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<List> getRawData() async {
+    try {
+      final db = await instance.database;
+      return await db.query("rawData");
     } catch (e) {
       throw e.toString();
     }

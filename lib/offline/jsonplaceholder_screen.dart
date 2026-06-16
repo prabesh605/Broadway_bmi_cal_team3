@@ -1,4 +1,6 @@
 import 'package:broadway_bmi_cal/offline/jsonplaceholderapi.dart';
+import 'package:broadway_bmi_cal/offline/offline_service.dart';
+import 'package:broadway_bmi_cal/offline/store_data.dart';
 import 'package:flutter/material.dart';
 
 class JsonplaceholderScreen extends StatefulWidget {
@@ -10,57 +12,54 @@ class JsonplaceholderScreen extends StatefulWidget {
 
 class _JsonplaceholderScreenState extends State<JsonplaceholderScreen> {
   Jsonplaceholderapi jsonplaceholderapi = Jsonplaceholderapi();
-  List<Map<String, dynamic>> jsonPlaceholderData = [];
+  List jsonPlaceholderData = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () async {
-              List<Map<String, dynamic>> data = await jsonplaceholderapi
-                  .getData();
-              setState(() {
-                jsonPlaceholderData = data;
-              });
-            },
-            child: Text("Get Data"),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: jsonPlaceholderData.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> myData = jsonPlaceholderData[index];
-                return ListTile(
-                  leading: Text("${myData['id']}"),
-                  title: Text(myData['title']),
-                  subtitle: Text(myData['body']),
-                  trailing: Container(
-                    width: 100,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          color: Colors.black,
-                          onPressed: () {
-                            // addUpdateData(myData);
-                          },
-                          icon: Icon(Icons.edit),
-                        ),
-                        IconButton(
-                          color: Colors.red,
-                          onPressed: () {
-                            // OfflineService.instance.delete(myData.id);
-                          },
-                          icon: Icon(Icons.delete),
-                        ),
-                      ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                // print(jsonPlaceholderData.length);
+                dynamic data = await jsonplaceholderapi.getData();
+
+                setState(() {
+                  jsonPlaceholderData = data;
+                });
+              },
+              child: Text("Get Data"),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: jsonPlaceholderData.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: Text("${jsonPlaceholderData[index]['id']}"),
+                    title: Text(jsonPlaceholderData[index]['title']),
+                    trailing: IconButton(
+                      onPressed: () async {
+                        await OfflineService.instance.insertRawData(
+                          jsonPlaceholderData[index],
+                        );
+                      },
+                      icon: Icon(Icons.save),
                     ),
-                  ),
+                  );
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StoreData()),
                 );
               },
+              child: Text("View Store Data"),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
