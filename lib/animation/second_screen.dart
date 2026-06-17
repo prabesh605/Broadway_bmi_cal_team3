@@ -1,4 +1,6 @@
 import 'package:broadway_bmi_cal/offline/offline_screen.dart';
+import 'package:broadway_bmi_cal/state_example/counter_screen.dart';
+import 'package:broadway_bmi_cal/state_example/counter_screen_withProvider.dart';
 import 'package:flutter/material.dart';
 
 class SecondScreen extends StatefulWidget {
@@ -26,7 +28,9 @@ class _SecondScreenState extends State<SecondScreen> {
                   // Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => OfflineScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => CounterScreenWithprovider(),
+                    ),
                   );
                 },
                 child: Text("Button"),

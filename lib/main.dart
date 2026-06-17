@@ -4,9 +4,15 @@ import 'package:broadway_bmi_cal/animation/animation_screen.dart';
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
 import 'package:broadway_bmi_cal/offline/offline_screen.dart';
 import 'package:broadway_bmi_cal/restful-api/api_test_screen.dart';
+import 'package:broadway_bmi_cal/state_example/cart_service.dart';
+import 'package:broadway_bmi_cal/state_example/counter_screen.dart';
+import 'package:broadway_bmi_cal/state_example/counter_screen_withProvider.dart';
+import 'package:broadway_bmi_cal/state_example/counter_service.dart';
+import 'package:broadway_bmi_cal/state_example/ecommerce_screen.dart';
 import 'package:broadway_bmi_cal/weather/login_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,11 +23,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext gitcontext) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: OfflineScreen(),
-      //  WeatherScreen(),
-      // BmiScreen()
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CounterService()),
+        ChangeNotifierProvider(create: (_) => CartService()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: EcommerceScreen(),
+        //  WeatherScreen(),
+        // BmiScreen()
+      ),
     );
   }
 }
