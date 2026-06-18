@@ -9,6 +9,7 @@ import 'package:broadway_bmi_cal/state_example/counter_screen.dart';
 import 'package:broadway_bmi_cal/state_example/counter_screen_withProvider.dart';
 import 'package:broadway_bmi_cal/state_example/counter_service.dart';
 import 'package:broadway_bmi_cal/state_example/ecommerce_screen.dart';
+import 'package:broadway_bmi_cal/state_example/theme_service.dart';
 import 'package:broadway_bmi_cal/weather/login_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,17 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext gitcontext) {
+  Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CounterService()),
         ChangeNotifierProvider(create: (_) => CartService()),
+        ChangeNotifierProvider(create: (_) => ThemeService()),
       ],
       child: MaterialApp(
+        // themeMode: context.watch<ThemeService>().isColorChange
+        //     ? ThemeMode.dark
+        //     : ThemeMode.light,
         debugShowCheckedModeBanner: false,
         home: EcommerceScreen(),
         //  WeatherScreen(),

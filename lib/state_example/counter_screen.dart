@@ -1,6 +1,9 @@
 import 'package:broadway_bmi_cal/animation/second_screen.dart';
+import 'package:broadway_bmi_cal/state_example/cart_service.dart';
 import 'package:broadway_bmi_cal/state_example/ecommerce_screen.dart';
+import 'package:broadway_bmi_cal/state_example/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CounterScreen extends StatefulWidget {
   const CounterScreen({super.key});
@@ -52,10 +55,26 @@ class _CounterScreenState extends State<CounterScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EcommerceScreen()),
+                  MaterialPageRoute(builder: (context) => SecondScreen()),
                 );
               },
               child: Text("Next Screen"),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: context.watch<CartService>().cartItem.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Product product = context
+                      .watch<CartService>()
+                      .cartItem[index];
+                  return ListTile(
+                    leading: Image.network(product.image, height: 100),
+                    title: Text(product.name),
+                    subtitle: Text("Price: ${product.price}"),
+                    trailing: Icon(Icons.shopping_cart),
+                  );
+                },
+              ),
             ),
           ],
         ),

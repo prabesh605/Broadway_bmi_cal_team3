@@ -1,7 +1,9 @@
 import 'package:broadway_bmi_cal/state_example/cart_screen.dart';
 import 'package:broadway_bmi_cal/state_example/cart_service.dart'
     show CartService;
+import 'package:broadway_bmi_cal/state_example/counter_screen.dart';
 import 'package:broadway_bmi_cal/state_example/product_model.dart';
+import 'package:broadway_bmi_cal/state_example/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +15,17 @@ class EcommerceScreen extends StatefulWidget {
 }
 
 class _EcommerceScreenState extends State<EcommerceScreen> {
+  // bool isLoading = false;
+  // Future<void> loadData() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   await Future.delayed(Duration(seconds: 5));
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
+
   // List<Product> cartItem = [];
   @override
   Widget build(BuildContext context) {
@@ -26,36 +39,81 @@ class _EcommerceScreenState extends State<EcommerceScreen> {
         },
         child: Icon(Icons.shopping_cart),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (BuildContext context, int index) {
-                Product product = products[index];
-                return ListTile(
-                  leading: Image.network(product.image, height: 100),
-                  title: Text(product.name),
-                  subtitle: Text("Price: ${product.price}"),
-                  trailing: IconButton(
-                    onPressed: () {
-                      // cartItem.add(product);
-                      context.read<CartService>().addToCart(product);
-                      print(products);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("${product.name} is Added to Cart"),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                    },
-                    icon: Icon(Icons.shopping_cart),
-                  ),
-                );
+      body: SafeArea(
+        child: Column(
+          children: [
+            Switch(
+              value: context.watch<ThemeService>().isColorChange,
+              // value: true,
+              onChanged: (value) {
+                context.read<ThemeService>().changeTheme();
               },
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Product product = products[index];
+                  return ListTile(
+                    leading: Image.network(product.image, height: 100),
+                    title: Text(product.name),
+                    subtitle: Text("Price: ${product.price}"),
+                    trailing: IconButton(
+                      onPressed: () {
+                        // cartItem.add(product);
+                        context.read<CartService>().addToCart(product);
+                        print(products);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("${product.name} is Added to Cart"),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.shopping_cart),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // isLoading
+            //     ? CircularProgressIndicator()
+            //     : ElevatedButton(
+            //         onPressed: () {
+            //           loadData();
+            //         },
+            //         child: Text("Load Data"),
+            //       ),
+            // CircularProgressIndicator(),
+            context.watch<CartService>().isLoading == true
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: () {
+                      context.read<CartService>().loadData();
+                    },
+                    child: Text("Load Data"),
+                  ),
+            SizedBox(height: 60),
+            Expanded(
+              child: ListView.builder(
+                itemCount: context.watch<CartService>().data.length,
+                itemBuilder: (context, index) {
+                  var data = context.watch<CartService>().data[index];
+                  return ListTile(title: Text(data['title']));
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CounterScreen()),
+                );
+              },
+              child: Text("View in Counter Screen"),
+            ),
+          ],
+        ),
       ),
     );
   }
