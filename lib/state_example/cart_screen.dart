@@ -17,19 +17,23 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: context.watch<CartService>().cartItem.length,
-              itemBuilder: (BuildContext context, int index) {
-                Product product = context.watch<CartService>().cartItem[index];
-                return ListTile(
-                  leading: Image.network(product.image, height: 100),
-                  title: Text(product.name),
-                  subtitle: Text("Price: ${product.price}"),
-                  trailing: Icon(Icons.shopping_cart),
-                );
-              },
-            ),
+          Consumer<CartService>(
+            builder: (context, cartService, child) {
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: cartService.cartItem.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Product product = cartService.cartItem[index];
+                    return ListTile(
+                      leading: Image.network(product.image, height: 100),
+                      title: Text(product.name),
+                      subtitle: Text("Price: ${product.price}"),
+                      trailing: Icon(Icons.shopping_cart),
+                    );
+                  },
+                ),
+              );
+            },
           ),
           ElevatedButton(
             onPressed: () {

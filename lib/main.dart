@@ -10,8 +10,10 @@ import 'package:broadway_bmi_cal/state_example/counter_screen_withProvider.dart'
 import 'package:broadway_bmi_cal/state_example/counter_service.dart';
 import 'package:broadway_bmi_cal/state_example/ecommerce_screen.dart';
 import 'package:broadway_bmi_cal/state_example/theme_service.dart';
+import 'package:broadway_bmi_cal/weather/api_service_with_provider.dart';
 import 'package:broadway_bmi_cal/weather/login_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen.dart';
+import 'package:broadway_bmi_cal/weather/weather_screen_with_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,15 +31,22 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CounterService()),
         ChangeNotifierProvider(create: (_) => CartService()),
         ChangeNotifierProvider(create: (_) => ThemeService()),
+        ChangeNotifierProvider(create: (_) => ApiServiceWithProvider()),
       ],
-      child: MaterialApp(
-        // themeMode: context.watch<ThemeService>().isColorChange
-        //     ? ThemeMode.dark
-        //     : ThemeMode.light,
-        debugShowCheckedModeBanner: false,
-        home: EcommerceScreen(),
-        //  WeatherScreen(),
-        // BmiScreen()
+      child: Consumer<ThemeService>(
+        builder: (context, themeService, child) {
+          return MaterialApp(
+            theme: themeService.isColorChange
+                ? ThemeData.dark()
+                : ThemeData.light(),
+
+            // theme: ThemeData.light(),
+            debugShowCheckedModeBanner: false,
+            // home: EcommerceScreen(),
+            home: WeatherScreenWithProvider(),
+            // BmiScreen()
+          );
+        },
       ),
     );
   }

@@ -94,14 +94,18 @@ class _EcommerceScreenState extends State<EcommerceScreen> {
                     child: Text("Load Data"),
                   ),
             SizedBox(height: 60),
-            Expanded(
-              child: ListView.builder(
-                itemCount: context.watch<CartService>().data.length,
-                itemBuilder: (context, index) {
-                  var data = context.watch<CartService>().data[index];
-                  return ListTile(title: Text(data['title']));
-                },
-              ),
+            Consumer<CartService>(
+              builder: (context, service, child) {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: service.data.length,
+                    itemBuilder: (context, index) {
+                      var data = service.data[index];
+                      return ListTile(title: Text(data['title']));
+                    },
+                  ),
+                );
+              },
             ),
             ElevatedButton(
               onPressed: () {
