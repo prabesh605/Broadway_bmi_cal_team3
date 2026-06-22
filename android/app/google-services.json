@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "280144506036",
+    "project_id": "broadwayteam3-73ab7",
+    "storage_bucket": "broadwayteam3-73ab7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280144506036:android:5682af0c41f1e4e9e8bbe1",
+        "android_client_info": {
+          "package_name": "com.example.broadway_bmi_cal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC6F_Y-fwW8-wQtjbl6q0NuX6vaWd1hDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

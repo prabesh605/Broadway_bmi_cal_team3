@@ -1,4 +1,5 @@
 import 'package:broadway_bmi_cal/weather/api_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -37,6 +38,20 @@ class LoginScreen extends StatelessWidget {
                 apiService.login(emailController.text, passwordController.text);
               },
               child: Text("Login"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await FirebaseFirestore.instance.collection('student').add({
+                    'body': 'data is inserted from mobile app',
+                    'title': 'inserting data in firebase',
+                  });
+                } catch (e) {
+                  print(e.toString());
+                  throw e.toString();
+                }
+              },
+              child: Text("Insert Data"),
             ),
           ],
         ),

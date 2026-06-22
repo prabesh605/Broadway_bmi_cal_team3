@@ -14,10 +14,13 @@ import 'package:broadway_bmi_cal/weather/api_service_with_provider.dart';
 import 'package:broadway_bmi_cal/weather/login_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen_with_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -43,7 +46,7 @@ class MyApp extends StatelessWidget {
             // theme: ThemeData.light(),
             debugShowCheckedModeBanner: false,
             // home: EcommerceScreen(),
-            home: WeatherScreenWithProvider(),
+            home: LoginScreen(),
             // BmiScreen()
           );
         },

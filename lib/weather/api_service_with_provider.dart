@@ -20,7 +20,7 @@ class ApiServiceWithProvider with ChangeNotifier {
     var json = jsonDecode(response.body);
     weather = WeatherModel.fromJson(json);
     notifyListeners();
-    return weather;
+    return WeatherModel.fromJson(json);
   }
 
   Future<WeatherModel?> getWeatherByCountry(String country) async {
@@ -99,6 +99,7 @@ class ApiServiceWithProvider with ChangeNotifier {
     double lat = position?.latitude ?? 0.0;
     double lon = position?.longitude ?? 0.0;
     //
+
     weather = await getWeatherData(lat, lon);
 
     weatherImage = checkWeather(weather?.cod ?? 200);
