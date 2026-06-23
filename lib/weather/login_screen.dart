@@ -39,20 +39,20 @@ class LoginScreen extends StatelessWidget {
               },
               child: Text("Login"),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  await FirebaseFirestore.instance.collection('student').add({
-                    'body': 'data is inserted from mobile app',
-                    'title': 'inserting data in firebase',
-                  });
-                } catch (e) {
-                  print(e.toString());
-                  throw e.toString();
-                }
-              },
-              child: Text("Insert Data"),
-            ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     try {
+            //       await FirebaseFirestore.instance.collection('student').add({
+            //         'body': 'data is inserted from mobile app',
+            //         'title': 'inserting data in firebase',
+            //       });
+            //     } catch (e) {
+            //       print(e.toString());
+            //       throw e.toString();
+            //     }
+            //   },
+            //   child: Text("Insert Data"),
+            // ),
           ],
         ),
       ),

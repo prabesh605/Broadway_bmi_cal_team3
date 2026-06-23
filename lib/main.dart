@@ -2,6 +2,7 @@
 // import 'package:broadway_bmi_cal/bmi_calculator/bmi_screen.dart';
 import 'package:broadway_bmi_cal/animation/animation_screen.dart';
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
+import 'package:broadway_bmi_cal/firebase/firebase_screen.dart';
 import 'package:broadway_bmi_cal/offline/offline_screen.dart';
 import 'package:broadway_bmi_cal/restful-api/api_test_screen.dart';
 import 'package:broadway_bmi_cal/state_example/cart_service.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             // theme: ThemeData.light(),
             debugShowCheckedModeBanner: false,
             // home: EcommerceScreen(),
-            home: LoginScreen(),
+            home: FirebaseScreen(),
             // BmiScreen()
           );
         },
