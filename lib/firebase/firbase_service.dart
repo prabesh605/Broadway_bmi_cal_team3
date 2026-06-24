@@ -6,6 +6,7 @@ class FirbaseService {
     await FirebaseFirestore.instance.collection('student').add(data.toJson());
   }
 
+  //get Data from firebase
   Future<List> getAllData() async {
     QuerySnapshot allData = await FirebaseFirestore.instance
         .collection('student')
@@ -15,6 +16,7 @@ class FirbaseService {
     return result;
   }
 
+  //get data from firebase with model
   Future<List<FirebaseModel>> getAllDataWithModel() async {
     QuerySnapshot allData = await FirebaseFirestore.instance
         .collection('student')
@@ -23,18 +25,41 @@ class FirbaseService {
     List<FirebaseModel> result = allData.docs.map((doc) {
       return FirebaseModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
     }).toList();
-    print(result);
+    // print(result);
     return result;
   }
 
+  //delete data
   Future<void> deleteData(String id) async {
     try {
       await FirebaseFirestore.instance
           .collection('student')
-          .doc("FnMApDRumBG8leIQYBre")
+          .doc("$id")
           .delete();
     } catch (e) {
       throw e.toString();
     }
+  }
+
+  //update data
+  Future<void> updateData(FirebaseModel updateData) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('student')
+          .doc(updateData.id)
+          .update(updateData.toJson());
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Stream<List<FirebaseModel>> getStreamData() {
+    return FirebaseFirestore.instance.collection('student').snapshots().map((
+      snapshot,
+    ) {
+      return snapshot.docs.map((doc) {
+        return FirebaseModel.fromJson(doc.data(), doc.id);
+      }).toList();
+    });
   }
 }

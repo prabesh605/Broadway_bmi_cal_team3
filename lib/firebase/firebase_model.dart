@@ -1,8 +1,8 @@
 class FirebaseModel {
   String? id;
   String name;
-  int year;
-  int marks;
+  String year;
+  String marks;
   FirebaseModel({
     required this.name,
     required this.year,
@@ -21,6 +21,6 @@ class FirebaseModel {
     'Name': name,
     'Year': year,
     'Marks': marks,
-    'id': id,
+    // 'id': id,
   };
 }

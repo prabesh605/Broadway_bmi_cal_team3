@@ -13,23 +13,34 @@ class FirebaseScreen extends StatefulWidget {
 
 class _FirebaseScreenState extends State<FirebaseScreen> {
   FirbaseService firebaseService = FirbaseService();
-  List<FirebaseModel> students = [];
+  late Future<List<FirebaseModel>> students;
+  // late Stream<List<FirebaseModel>> streamStudents;
 
   @override
   void initState() {
     getData();
+    // streamStudents = firebaseService.getStreamData();
+    // students = firebaseService.getAllDataWithModel();
     super.initState();
   }
 
   Future<void> getData() async {
-    students = await firebaseService.getAllDataWithModel();
+    // students =
+    students = firebaseService.getAllDataWithModel();
     setState(() {});
+    // setState(() {});
   }
 
-  void showButtonSheetDialog() {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController yearController = TextEditingController();
-    TextEditingController marksController = TextEditingController();
+  void showButtonSheetDialog(FirebaseModel? firebaseData) {
+    TextEditingController nameController = TextEditingController(
+      text: firebaseData?.name ?? "",
+    );
+    TextEditingController yearController = TextEditingController(
+      text: firebaseData?.year ?? "0",
+    );
+    TextEditingController marksController = TextEditingController(
+      text: firebaseData?.marks ?? "0",
+    );
 
     showModalBottomSheet(
       context: context,
@@ -40,7 +51,7 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
           mainAxisSize: MainAxisSize.min,
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Add Data"),
+            firebaseData == null ? Text("Add Data") : Text("Update Data"),
             SizedBox(height: 20),
             TextFormField(
               controller: nameController,
@@ -75,16 +86,22 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
                 int marks = int.parse(marksController.text);
 
                 var data = FirebaseModel(
-                  id: "",
+                  id: firebaseData == null ? "" : firebaseData.id,
                   name: name,
-                  year: year,
-                  marks: marks,
+                  year: "$year",
+                  marks: "$marks",
                 );
+                if (firebaseData == null) {
+                  //create
+                  await firebaseService.insertData(data);
+                } else {
+                  //update
+                  await firebaseService.updateData(data);
+                }
 
-                await firebaseService.insertData(data);
                 Navigator.pop(context);
               },
-              child: Text("Save"),
+              child: firebaseData == null ? Text("Save") : Text("Update"),
             ),
           ],
         ),
@@ -98,30 +115,141 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
       appBar: AppBar(title: Text("Firebase Screen")),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showButtonSheetDialog();
+          showButtonSheetDialog(null);
         },
         child: Icon(Icons.add),
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: students.length,
-              itemBuilder: (context, index) {
-                var student = students[index];
-                return ListTile(
-                  title: Text(student.name),
-                  subtitle: Text("${student.marks}"),
-                  trailing: IconButton(
-                    onPressed: () async {
-                      await firebaseService.deleteData(student.id ?? "i88");
-                    },
-                    icon: Icon(Icons.delete, color: Colors.red),
-                  ),
-                );
-              },
-            ),
+          ElevatedButton(
+            onPressed: () {
+              getData();
+            },
+            child: Text("Refresh"),
           ),
+          FutureBuilder(
+            future: students,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text("Error");
+              }
+              final List<FirebaseModel> students = snapshot.data!;
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: students.length,
+                  itemBuilder: (context, index) {
+                    var student = students[index];
+                    return ListTile(
+                      title: Text(student.name),
+                      subtitle: Text("${student.marks}"),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                showButtonSheetDialog(student);
+                              },
+                              icon: Icon(Icons.edit, color: Colors.green),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await firebaseService.deleteData(
+                                  student.id ?? "i88",
+                                );
+                              },
+                              icon: Icon(Icons.delete, color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+          StreamBuilder(
+            stream: firebaseService.getStreamData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text("Error"));
+              }
+              final students = snapshot.data!;
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: students.length,
+                  itemBuilder: (context, index) {
+                    var student = students[index];
+                    return ListTile(
+                      title: Text(student.name),
+                      subtitle: Text("${student.marks}"),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                showButtonSheetDialog(student);
+                              },
+                              icon: Icon(Icons.edit, color: Colors.green),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await firebaseService.deleteData(
+                                  student.id ?? "i88",
+                                );
+                              },
+                              icon: Icon(Icons.delete, color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+          // Expanded(
+          //   child: ListView.builder(
+          //     itemCount: students.length,
+          //     itemBuilder: (context, index) {
+          //       var student = students[index];
+          //       return ListTile(
+          //         title: Text(student.name),
+          //         subtitle: Text("${student.marks}"),
+          //         trailing: SizedBox(
+          //           width: 100,
+          //           child: Row(
+          //             children: [
+          //               IconButton(
+          //                 onPressed: () async {
+          //                   showButtonSheetDialog(student);
+          //                 },
+          //                 icon: Icon(Icons.edit, color: Colors.green),
+          //               ),
+          //               IconButton(
+          //                 onPressed: () async {
+          //                   await firebaseService.deleteData(
+          //                     student.id ?? "i88",
+          //                   );
+          //                 },
+          //                 icon: Icon(Icons.delete, color: Colors.red),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
