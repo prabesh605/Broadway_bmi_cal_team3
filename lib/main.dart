@@ -2,6 +2,7 @@
 // import 'package:broadway_bmi_cal/bmi_calculator/bmi_screen.dart';
 import 'package:broadway_bmi_cal/animation/animation_screen.dart';
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
+import 'package:broadway_bmi_cal/firebase/firebase_login_screen.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_screen.dart';
 import 'package:broadway_bmi_cal/offline/offline_screen.dart';
 import 'package:broadway_bmi_cal/restful-api/api_test_screen.dart';
@@ -12,7 +13,7 @@ import 'package:broadway_bmi_cal/state_example/counter_service.dart';
 import 'package:broadway_bmi_cal/state_example/ecommerce_screen.dart';
 import 'package:broadway_bmi_cal/state_example/theme_service.dart';
 import 'package:broadway_bmi_cal/weather/api_service_with_provider.dart';
-import 'package:broadway_bmi_cal/weather/login_screen.dart';
+import 'package:broadway_bmi_cal/firebase/firebase_create_user_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen_with_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
             // theme: ThemeData.light(),
             debugShowCheckedModeBanner: false,
             // home: EcommerceScreen(),
-            home: FirebaseScreen(),
+            home: FirebaseLoginScreen(),
             // BmiScreen()
           );
         },

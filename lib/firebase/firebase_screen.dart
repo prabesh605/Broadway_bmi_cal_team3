@@ -1,4 +1,5 @@
 import 'package:broadway_bmi_cal/firebase/firbase_service.dart';
+import 'package:broadway_bmi_cal/firebase/firebase_login_screen.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -112,7 +113,21 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Firebase Screen")),
+      appBar: AppBar(
+        title: Text("Firebase Screen"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              firebaseService.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => FirebaseLoginScreen()),
+              );
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showButtonSheetDialog(null);
