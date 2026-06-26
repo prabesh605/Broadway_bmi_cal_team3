@@ -1,8 +1,10 @@
 import 'package:broadway_bmi_cal/firebase/firebase_model.dart';
+import 'package:broadway_bmi_cal/firebase/firebase_product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirbaseService {
+  //////////////////////---Student------------/////////////////////////
   Future<void> insertData(FirebaseModel data) async {
     await FirebaseFirestore.instance.collection('student').add(data.toJson());
   }
@@ -63,6 +65,41 @@ class FirbaseService {
       }).toList();
     });
   }
+
+  ///////////////////---------students--------------////////////////////
+
+  /////////////////////-------------products-----------------///////////////////////////
+
+  Future<void> insertProduct(Map<String, dynamic> product) async {
+    await FirebaseFirestore.instance.collection('Products').add(product);
+  }
+
+  Future<void> insertProductWithModel(FirebaseProductsModel product) async {
+    await FirebaseFirestore.instance
+        .collection('Products')
+        .add(product.toJson());
+  }
+
+  Future<List<FirebaseProductsModel>> getFirebaseProducts() async {
+    QuerySnapshot result = await FirebaseFirestore.instance
+        .collection('Products')
+        .get();
+    return result.docs
+        .map(
+          (doc) => FirebaseProductsModel.fromJsom(
+            doc.data() as Map<String, dynamic>,
+            doc.id,
+          ),
+        )
+        .toList();
+    // try {
+
+    // } catch (e) {
+    //   e.toString();
+    // }
+  }
+
+  /////////////////////-------------products-----------------///////////////////////////
 
   Future<UserCredential> createUser(String email, String password) async {
     try {

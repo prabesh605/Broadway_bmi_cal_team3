@@ -1,5 +1,6 @@
 import 'package:broadway_bmi_cal/firebase/firbase_service.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_create_user_screen.dart';
+import 'package:broadway_bmi_cal/firebase/firebase_product_screen.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class FirebaseLoginScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const FirebaseScreen(),
+                      builder: (context) => const FirebaseProductScreen(),
                     ),
                   );
                 }

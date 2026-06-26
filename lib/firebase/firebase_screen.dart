@@ -157,6 +157,7 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
                   itemCount: students.length,
                   itemBuilder: (context, index) {
                     var student = students[index];
+
                     return ListTile(
                       title: Text(student.name),
                       subtitle: Text("${student.marks}"),
