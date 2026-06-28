@@ -72,6 +72,12 @@ class FirebaseLoginScreen extends StatelessWidget {
               },
               child: Text("Create new User"),
             ),
+            GestureDetector(
+              onTap: () {
+                firbaseService.signInWithGoogle();
+              },
+              child: Card(child: Text("Login With Google")),
+            ),
           ],
         ),
       ),

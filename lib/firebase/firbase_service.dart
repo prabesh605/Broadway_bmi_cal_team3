@@ -2,6 +2,7 @@ import 'package:broadway_bmi_cal/firebase/firebase_model.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirbaseService {
   //////////////////////---Student------------/////////////////////////
@@ -11,9 +12,8 @@ class FirbaseService {
 
   //get Data from firebase
   Future<List> getAllData() async {
-    QuerySnapshot allData = await FirebaseFirestore.instance
-        .collection('student')
-        .get();
+    QuerySnapshot allData =
+        await FirebaseFirestore.instance.collection('student').get();
     var result = allData.docs.map((e) => e.data()).toList();
     print(result);
     return result;
@@ -21,9 +21,8 @@ class FirbaseService {
 
   //get data from firebase with model
   Future<List<FirebaseModel>> getAllDataWithModel() async {
-    QuerySnapshot allData = await FirebaseFirestore.instance
-        .collection('student')
-        .get();
+    QuerySnapshot allData =
+        await FirebaseFirestore.instance.collection('student').get();
     // var result = allData.docs.map((e) => e.data()).toList();
     List<FirebaseModel> result = allData.docs.map((doc) {
       return FirebaseModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
@@ -81,22 +80,21 @@ class FirbaseService {
   }
 
   Future<List<FirebaseProductsModel>> getFirebaseProducts() async {
-    QuerySnapshot result = await FirebaseFirestore.instance
-        .collection('Products')
-        .get();
-    return result.docs
-        .map(
-          (doc) => FirebaseProductsModel.fromJsom(
-            doc.data() as Map<String, dynamic>,
-            doc.id,
-          ),
-        )
-        .toList();
-    // try {
-
-    // } catch (e) {
-    //   e.toString();
-    // }
+    try {
+      QuerySnapshot result =
+          await FirebaseFirestore.instance.collection('Products').get();
+      return result.docs
+          .map(
+            (doc) => FirebaseProductsModel.fromJsom(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            ),
+          )
+          .toList();
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
   }
 
   /////////////////////-------------products-----------------///////////////////////////
@@ -126,4 +124,21 @@ class FirbaseService {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser =
+        await GoogleSignIn.instance.authenticate();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = googleUser!.authentication;
+
+    // Create a new credential
+    final credential =
+        GoogleAuthProvider.credential(idToken: googleAuth.idToken);
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 }
+//gradlew signingReport

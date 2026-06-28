@@ -80,7 +80,6 @@ class _FirebaseProductScreenState extends State<FirebaseProductScreen> {
               ),
             ),
             SizedBox(height: 20),
-
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
@@ -121,6 +120,7 @@ class _FirebaseProductScreenState extends State<FirebaseProductScreen> {
 
   Future<void> getProducts() async {
     products = await firebaseService.getFirebaseProducts();
+    setState(() {});
   }
 
   @override
@@ -158,10 +158,24 @@ class _FirebaseProductScreenState extends State<FirebaseProductScreen> {
               ),
               itemBuilder: (context, index) {
                 FirebaseProductsModel product = products[index];
-                return ListTile(title: Text(product.title));
+                return Card(
+                    child: Column(children: [
+                  SizedBox(
+                      height: 80, child: Image.network(product.image ?? "")),
+                  Text(product.title),
+                  Text(product.subtitle ?? ""),
+                  Text("Price: ${product.price}"),
+                  Text("Rating: ${product.rating}")
+                ]));
+                //  ListTile(title: Text(product.title));
               },
             ),
           ),
+          ElevatedButton(
+              onPressed: () {
+                getProducts();
+              },
+              child: Text("Get Data"))
         ],
       ),
     );
