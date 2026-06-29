@@ -2,6 +2,8 @@
 // import 'package:broadway_bmi_cal/bmi_calculator/bmi_screen.dart';
 import 'package:broadway_bmi_cal/animation/animation_screen.dart';
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
+import 'package:broadway_bmi_cal/bloc/bloc_services/counter_bloc.dart';
+import 'package:broadway_bmi_cal/bloc/counter_screen_with_bloc.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_login_screen.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_screen.dart';
 import 'package:broadway_bmi_cal/offline/offline_screen.dart';
@@ -18,6 +20,7 @@ import 'package:broadway_bmi_cal/weather/weather_screen.dart';
 import 'package:broadway_bmi_cal/weather/weather_screen_with_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -31,28 +34,46 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CounterService()),
-        ChangeNotifierProvider(create: (_) => CartService()),
-        ChangeNotifierProvider(create: (_) => ThemeService()),
-        ChangeNotifierProvider(create: (_) => ApiServiceWithProvider()),
+        BlocProvider(create: (BuildContext context) => CounterBloc()),
       ],
-      child: Consumer<ThemeService>(
-        builder: (context, themeService, child) {
-          return MaterialApp(
-            theme: themeService.isColorChange
-                ? ThemeData.dark()
-                : ThemeData.light(),
-
-            // theme: ThemeData.light(),
-            debugShowCheckedModeBanner: false,
-            // home: EcommerceScreen(),
-            home: FirebaseLoginScreen(),
-            // BmiScreen()
-          );
-        },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        // home: EcommerceScreen(),
+        home: CounterScreenWithBloc(),
+        // BmiScreen()
       ),
     );
   }
 }
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider(create: (_) => CounterService()),
+//         ChangeNotifierProvider(create: (_) => CartService()),
+//         ChangeNotifierProvider(create: (_) => ThemeService()),
+//         ChangeNotifierProvider(create: (_) => ApiServiceWithProvider()),
+//       ],
+//       child: Consumer<ThemeService>(
+//         builder: (context, themeService, child) {
+//           return MaterialApp(
+//             theme: themeService.isColorChange
+//                 ? ThemeData.dark()
+//                 : ThemeData.light(),
+
+//             // theme: ThemeData.light(),
+//             debugShowCheckedModeBanner: false,
+//             // home: EcommerceScreen(),
+//             home: CounterScreenWithBloc(),
+//             // BmiScreen()
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
