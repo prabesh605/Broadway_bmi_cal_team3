@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // home: EcommerceScreen(),
-        home: CounterScreenWithBloc(),
+        home: ApiTestScreen(),
         // BmiScreen()
       ),
     );

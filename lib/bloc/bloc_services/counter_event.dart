@@ -2,14 +2,8 @@
 //api call
 abstract class CounterEvent {}
 
-class CounterIncrease extends CounterEvent {
-  int count;
-  CounterIncrease(this.count);
-}
+class CounterIncrease extends CounterEvent {}
 
-class CounterDecrease extends CounterEvent {
-  int count;
-  CounterDecrease(this.count);
-}
+class CounterDecrease extends CounterEvent {}
 
 class CounterReset extends CounterEvent {}

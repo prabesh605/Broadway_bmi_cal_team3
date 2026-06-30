@@ -15,12 +15,15 @@ class ApiTestServices {
       Uri.parse(baseURl),
       headers: {"x-api-key": "1b954e26-4980-463c-8f9f-89a7e3a56ab1"},
     );
+
     final List<dynamic> jsonData = jsonDecode(response.body);
+    // jsonData[0]['name'];
 
     List<TestApiResponse> data = jsonData
         .map((item) => TestApiResponse.fromJson(item))
         .toList();
     print(data);
+    // data[0].name;
     return data;
   }
 

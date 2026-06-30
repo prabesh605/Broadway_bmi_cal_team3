@@ -44,7 +44,7 @@ class _CounterScreenWithBlocState extends State<CounterScreenWithBloc> {
                   onPressed: () {
                     // increment();
 
-                    context.read<CounterBloc>().add(CounterIncrease(count));
+                    context.read<CounterBloc>().add(CounterIncrease());
                   },
                   icon: Icon(Icons.add),
                 ),
@@ -72,6 +72,7 @@ class _CounterScreenWithBlocState extends State<CounterScreenWithBloc> {
                 IconButton(
                   onPressed: () {
                     // decrement();
+                    context.read<CounterBloc>().add(CounterDecrease());
                   },
                   icon: Icon(Icons.remove),
                 ),
@@ -80,6 +81,7 @@ class _CounterScreenWithBlocState extends State<CounterScreenWithBloc> {
             IconButton(
               onPressed: () {
                 // decrement();
+                context.read<CounterBloc>().add(CounterReset());
               },
               icon: Icon(Icons.restore),
             ),
