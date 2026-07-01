@@ -2,12 +2,12 @@ import 'package:broadway_bmi_cal/animation/second_screen.dart';
 import 'package:broadway_bmi_cal/bloc/bloc_services/counter_bloc.dart';
 import 'package:broadway_bmi_cal/bloc/bloc_services/counter_event.dart';
 import 'package:broadway_bmi_cal/bloc/bloc_services/counter_state.dart';
+import 'package:broadway_bmi_cal/bloc/login_screen_with_bloc.dart';
 import 'package:broadway_bmi_cal/state_example/cart_service.dart';
 import 'package:broadway_bmi_cal/state_example/ecommerce_screen.dart';
 import 'package:broadway_bmi_cal/state_example/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 class CounterScreenWithBloc extends StatefulWidget {
   const CounterScreenWithBloc({super.key});
@@ -84,6 +84,17 @@ class _CounterScreenWithBlocState extends State<CounterScreenWithBloc> {
                 context.read<CounterBloc>().add(CounterReset());
               },
               icon: Icon(Icons.restore),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreenWithBloc(),
+                  ),
+                );
+              },
+              child: Text("Login"),
             ),
           ],
         ),

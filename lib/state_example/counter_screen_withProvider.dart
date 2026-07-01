@@ -28,7 +28,12 @@ class _CounterScreenWithproviderState extends State<CounterScreenWithprovider> {
                   },
                   icon: Icon(Icons.add),
                 ),
-                Text("${context.watch<CounterService>().count}"),
+                // Text("${context.watch<CounterService>().count}"),
+                Consumer<CounterService>(
+                  builder: (context, state, child) {
+                    return Text("${state.count}");
+                  },
+                ),
                 IconButton(
                   onPressed: () {
                     context.read<CounterService>().decrement();

@@ -4,6 +4,7 @@ import 'package:broadway_bmi_cal/animation/animation_screen.dart';
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
 import 'package:broadway_bmi_cal/bloc/bloc_services/counter_bloc.dart';
 import 'package:broadway_bmi_cal/bloc/counter_screen_with_bloc.dart';
+import 'package:broadway_bmi_cal/bloc/login_bloc/login_bloc.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_login_screen.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_screen.dart';
 import 'package:broadway_bmi_cal/offline/offline_screen.dart';
@@ -37,11 +38,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (BuildContext context) => CounterBloc()),
+        BlocProvider(create: (BuildContext context) => LoginBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // home: EcommerceScreen(),
-        home: ApiTestScreen(),
+        home: CounterScreenWithBloc(),
         // BmiScreen()
       ),
     );
