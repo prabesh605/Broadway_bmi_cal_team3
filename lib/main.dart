@@ -2,9 +2,11 @@
 // import 'package:broadway_bmi_cal/bmi_calculator/bmi_screen.dart';
 import 'package:broadway_bmi_cal/animation/animation_screen.dart';
 import 'package:broadway_bmi_cal/animation/first_screen.dart';
+import 'package:broadway_bmi_cal/bloc/api_test_srceen_with_bloc.dart';
 import 'package:broadway_bmi_cal/bloc/bloc_services/counter_bloc.dart';
 import 'package:broadway_bmi_cal/bloc/counter_screen_with_bloc.dart';
 import 'package:broadway_bmi_cal/bloc/login_bloc/login_bloc.dart';
+import 'package:broadway_bmi_cal/bloc/test_api_bloc/test_api_bloc.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_login_screen.dart';
 import 'package:broadway_bmi_cal/firebase/firebase_screen.dart';
 import 'package:broadway_bmi_cal/offline/offline_screen.dart';
@@ -39,11 +41,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (BuildContext context) => CounterBloc()),
         BlocProvider(create: (BuildContext context) => LoginBloc()),
+        BlocProvider(create: (BuildContext context) => TestApiBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // home: EcommerceScreen(),
-        home: CounterScreenWithBloc(),
+        home: ApiTestSrceenWithBloc(),
         // BmiScreen()
       ),
     );
